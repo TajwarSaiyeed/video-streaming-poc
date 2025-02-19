@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import multer from "multer";
 import { v4 as uuidv4 } from "uuid";
+import multer from "multer";
 
 const app = express();
 
@@ -26,6 +27,17 @@ app.use((req, res, next) => {
   );
 //   res.header("Access-Control-Allow-Credentials", true);
   next();
+});
+
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads");
+  },
+  filename: (req, file, cb) => {
+    const fileName = `${uuidv4()}-${file.originalname}`;
+    cb(null, fileName);
+  },
 });
 
 app.get("/", (req, res) => {
